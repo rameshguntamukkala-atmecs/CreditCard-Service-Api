@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.bank.creditCard.io.entities.CardRewardPoints;
+import com.bank.creditCard.entities.CardRewardPoints;
 
 @Repository
 public interface RewardPointsRepository extends JpaRepository<CardRewardPoints, Long>{

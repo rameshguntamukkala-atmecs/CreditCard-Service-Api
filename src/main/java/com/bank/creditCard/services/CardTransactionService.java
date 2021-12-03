@@ -14,9 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.bank.creditCard.Exceptions.DataNotFound;
+import com.bank.creditCard.entities.CardRewardPoints;
 import com.bank.creditCard.entities.CreditCardDetails;
 import com.bank.creditCard.entities.TransactionDetails;
-import com.bank.creditCard.io.entities.CardRewardPoints;
 import com.bank.creditCard.io.entities.ServiceResponse;
 import com.bank.creditCard.io.entities.TransactionInputDetails;
 import com.bank.creditCard.io.entities.TransactionSearchQuery;
@@ -65,18 +65,19 @@ public class CardTransactionService {
 		
 		repository.save(transactionDetails);
 
-		BigDecimal outStandingAmount = null;
-		if(Constants.TRANSACTION_TYPE_DEBIT.equals(transactionDetails.getTransactionType())) {
-			outStandingAmount = inputTransactionDetails.getCreditCardDetails().getOutStandingAmount().add(inputTransactionDetails.getAmount());
-		} else if (Constants.TRANSACTION_TYPE_CREDIT.equals(transactionDetails.getTransactionType())) {
-			outStandingAmount = inputTransactionDetails.getCreditCardDetails().getOutStandingAmount().subtract(inputTransactionDetails.getAmount());
+		if(Constants.TRANSACTION_STATUS_SUCCESS.equals(transactionDetails.getTransactionStatus()) ) {
+			BigDecimal outStandingAmount = null;
+			
+			if(Constants.TRANSACTION_TYPE_DEBIT.equals(transactionDetails.getTransactionType())) {
+				outStandingAmount = inputTransactionDetails.getCreditCardDetails().getOutStandingAmount().add(inputTransactionDetails.getAmount());
+			} else if (Constants.TRANSACTION_TYPE_CREDIT.equals(transactionDetails.getTransactionType())) {
+				outStandingAmount = inputTransactionDetails.getCreditCardDetails().getOutStandingAmount().subtract(inputTransactionDetails.getAmount());
+			}
+			
+			inputTransactionDetails.getCreditCardDetails().setOutStandingAmount(outStandingAmount);
+			inputTransactionDetails.getCreditCardDetails().setOutStandingAmountModifiedTime(new Timestamp(System.currentTimeMillis()));
+			creditCardDetailsRepository.save(inputTransactionDetails.getCreditCardDetails());
 		}
-		
-		inputTransactionDetails.getCreditCardDetails().setOutStandingAmount(outStandingAmount);
-		inputTransactionDetails.getCreditCardDetails().setOutStandingAmountModifiedTime(new Timestamp(System.currentTimeMillis()));
-		
-		creditCardDetailsRepository.save(inputTransactionDetails.getCreditCardDetails());
-		
 		
 		return CompletableFuture.completedFuture(inputTransactionDetails) ;
 	}

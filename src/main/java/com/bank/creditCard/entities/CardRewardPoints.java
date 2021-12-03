@@ -1,4 +1,4 @@
-package com.bank.creditCard.io.entities;
+package com.bank.creditCard.entities;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;

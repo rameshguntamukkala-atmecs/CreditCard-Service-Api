@@ -16,12 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import com.bank.creditCard.entities.CardRewardPoints;
 import com.bank.creditCard.entities.CreditCardDetails;
 import com.bank.creditCard.entities.CreditCardName;
 import com.bank.creditCard.entities.TransactionDetails;
 import com.bank.creditCard.factory.RewardPointsFactory;
 import com.bank.creditCard.factory.RewardPointsCalculator;
-import com.bank.creditCard.io.entities.CardRewardPoints;
 import com.bank.creditCard.repositories.RewardPointsRepository;
 import com.bank.creditCard.repositories.TransactionRepository;
 import com.bank.creditCard.utilities.Constants;

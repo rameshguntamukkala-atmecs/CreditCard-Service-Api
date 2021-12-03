@@ -32,14 +32,14 @@ public class CreditCardUserService {
 	@Autowired
 	CreditCardDetailsRepository creditCardDetailsRepository;
 	
-	public ResponseEntity<ServiceResponse> getUserDetails(Long userId) {
+	public ResponseEntity<ServiceResponse> getUserDetails(Long userId) throws DataNotFound {
 		
 		Optional<CustomerDetails> customerDetails =  customerDetailsRepository.findById(userId);
 		
 		if(customerDetails.isPresent()) {
 			return Utility.getResponseEntity(customerDetails.get(), HttpStatus.FOUND, MessageConstants.DATA_FOUND);
 		} else {
-			return Utility.getResponseEntity(new DataNotFound(), HttpStatus.NOT_FOUND, MessageConstants.DATA_NOT_FOUND);
+			throw new DataNotFound("User not found for the userId: "+ userId);
 		}
 	}
 
