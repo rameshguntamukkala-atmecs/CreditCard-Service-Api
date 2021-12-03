@@ -52,7 +52,13 @@ public class CardTransactionService {
 	@Autowired
 	TransactionSearchRepository transactionSearchRepository;
 	
-	
+	/**
+	 * This method is used to save the Credit Card transaction in {@link TransactionDetails}
+	 * <p>This method will validate {@link TransactionInputDetails} and save the {@link TransactionDetails} with transaction status. 
+	 * If the transaction status is success the, service will calculate the Outstanding amount and updated  the Customer {@link CreditCardDetails}</p>
+	 * @param inputTransactionDetails Credit Card transaction details
+	 * @return Transaction details binded in {@link CompletableFuture} as it is Asynchronous method
+	 */
 	@Transactional
 	public  CompletableFuture<TransactionInputDetails> submitCreditCardTransaction(TransactionInputDetails inputTransactionDetails)  {
 	
@@ -82,7 +88,12 @@ public class CardTransactionService {
 		return CompletableFuture.completedFuture(inputTransactionDetails) ;
 	}
 
-
+	/**
+	 * This method will get Reward Points generated on Credit Card
+	 * @param cardId This is carId of a {@link CreditCardDetails}
+	 * @return {@link CardRewardPoints} of a Credit card is binded in {@link ResponseEntity}
+	 * @throws DataNotFound When no Reward points found for a Credit Card
+	 */
 	public ResponseEntity<ServiceResponse> getRewardPointsForCard(Long cardId) throws DataNotFound {
 		Optional<CardRewardPoints>  cardRewardPoints = rewardPointsRepository.findByCardId(cardId);
 		
@@ -93,7 +104,11 @@ public class CardTransactionService {
 		return Utility.getResponseEntity(cardRewardPoints.get(), HttpStatus.FOUND, MessageConstants.DATA_FOUND);
 	}
 
-
+	/**
+	 * This method is used to search for Credit Card transaction based on search criteria
+	 * @param searchQuery Search criteria on Credit Card to find the {@link TransactionDetails}
+	 * @return List of {@link TransactionDetails} binded in {@link TransactionSearchResponse}
+	 */
 	public TransactionSearchResponse getStatementPerCard(TransactionSearchQuery searchQuery) {
 
 		List<TransactionDetails> transactionDetails = transactionSearchRepository.getTransactionDetails(searchQuery);

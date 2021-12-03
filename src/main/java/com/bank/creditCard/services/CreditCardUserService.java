@@ -19,7 +19,11 @@ import com.bank.creditCard.repositories.CustomerDetailsRepository;
 import com.bank.creditCard.utilities.MessageConstants;
 import com.bank.creditCard.utilities.Utility;
 import com.bank.creditCard.validators.RequestValidator;
-
+/**
+ * 
+ * This is Customer service layer where Customer related activities can be performed 
+ *
+ */
 @Service
 public class CreditCardUserService {
 
@@ -32,6 +36,12 @@ public class CreditCardUserService {
 	@Autowired
 	CreditCardDetailsRepository creditCardDetailsRepository;
 	
+	/**
+	 * This method is used to get the {@link CustomerDetails} from the DB
+	 * @param userId This is userId find the {@link CustomerDetails} 
+	 * @return {@link CustomerDetails} is binded in {@link ResponseEntity}
+	 * @throws DataNotFound When not {@link CustomerDetails} found for the userId
+	 */
 	public ResponseEntity<ServiceResponse> getUserDetails(Long userId) throws DataNotFound {
 		
 		Optional<CustomerDetails> customerDetails =  customerDetailsRepository.findById(userId);
@@ -43,6 +53,14 @@ public class CreditCardUserService {
 		}
 	}
 
+	/**
+	 * This method is used to updated the Customer phone number, emailId etc. 
+	 * @param userId This is the userId to find the {@link CustomerDetails}
+	 * @param customerDetails Updated customer fields of a {@link CustomerDetails}
+	 * @return Updated {@link CustomerDetails}
+	 * @throws DataNotFound When {@link CustomerDetails} is not found for userId
+	 * @throws InvalidRequestException When Customer primary fields (Like PAN number, FirstName, LastName) are updated
+	 */
 	@Transactional
 	public ResponseEntity<ServiceResponse> validateAndUpdateUserDetails(Long userId, CustomerDetails customerDetails) throws DataNotFound, InvalidRequestException {
 		
@@ -52,6 +70,11 @@ public class CreditCardUserService {
 		return Utility.getResponseEntity(customerDetails, HttpStatus.CREATED, MessageConstants.USER_DETAILS_UPDATE_SUCCESS);
 	}
 
+	/**
+	 * This method is used to get all Credit Cards available for a Customer
+	 * @param userId  UserId to find the {@link CustomerDetails}
+	 * @return List of {@link CustomerDetails} binded {@link ResponseEntity} 
+	 */
 	public ResponseEntity<ServiceResponse> getCardsAvailableForUser(Long userId) {
 		
 		List<CreditCardDetails> userCreditCardsList =  creditCardDetailsRepository.findCardsByUserId(userId);
@@ -59,6 +82,11 @@ public class CreditCardUserService {
 		return Utility.getResponseEntity(userCreditCardsList, HttpStatus.OK, null);
 	}
 
+	/**
+	 * This method is used to get a Credit Card details of a Customer
+	 * @param cardId cardId to find the {@link CreditCardDetails}
+	 * @return {@link CreditCardDetails} binded in {@link ResponseEntity}
+	 */
 	public ResponseEntity<ServiceResponse> getCreditCardDetails(Long cardId) {
 
 		Optional<CreditCardDetails> creditCardDetails = creditCardDetailsRepository.findById(cardId);
