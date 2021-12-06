@@ -44,7 +44,7 @@ This service will offer the customers to apply for a credit card. Customers can 
 > Users can redeem reward points when a credit card has a minimum 4000 reward points. Each reward point value is Rs. 0.35 and this cashback amount is converted in bill settlement.
 
     
-# Tech
+## Tech
 
 `Java 11`
 `Spring Boot 2.6.0`
@@ -54,3 +54,10 @@ This service will offer the customers to apply for a credit card. Customers can 
 `Mockito Framework`
 `Maven`
 
+## SpringDoc-OpenApi Documentation
+`http://localhost:8081/creditcard/api/swagger-ui.html`
+
+## Javadoc - Documentation
+Command to generate Javadoc
+
+`mvn javadoc:jar`
