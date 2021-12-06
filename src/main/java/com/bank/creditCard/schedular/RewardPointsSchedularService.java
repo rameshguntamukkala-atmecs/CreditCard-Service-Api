@@ -5,7 +5,6 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -26,6 +25,12 @@ import com.bank.creditCard.repositories.RewardPointsRepository;
 import com.bank.creditCard.repositories.TransactionRepository;
 import com.bank.creditCard.utilities.Constants;
 
+/**
+ * 
+ * This is a service class used to calculate the reward points on differnt card
+ * transactions
+ *
+ */
 @Component
 public class RewardPointsSchedularService {
  @Autowired
@@ -36,6 +41,13 @@ public class RewardPointsSchedularService {
  RewardPointsFactory factory;
  private static Logger logger = LoggerFactory
    .getLogger(RewardPointsSchedularService.class);
+ /**
+  * This method will calculate reward points based on list of transactions
+  * @param transactions    List of {@link TransactionDetails} on a customer
+  *                        credit card
+  * @param userCardDetails {@link CreditCardDetails} of a Customer
+  * @param cardNameDetails {@link CreditCardName} of a Customer
+  */
  // @Async("asyncExecutor")
  @Transactional
  public void processTransactions(List<TransactionDetails> transactions,
@@ -108,6 +120,12 @@ public class RewardPointsSchedularService {
 
  }
 
+ /**
+  * This method will generate the entity class for {@link CardRewardPoints}
+  * @param totalRewardPoints Total reward points on credit card
+  * @param userCardId        cardId of a credit card
+  * @return New {@link CardRewardPoints} entity
+  */
  private CardRewardPoints getNewRewardPointsObject(BigInteger totalRewardPoints,
    Long userCardId) {
   CardRewardPoints rewardPoints = new CardRewardPoints();

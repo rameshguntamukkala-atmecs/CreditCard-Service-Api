@@ -1,7 +1,6 @@
 package com.bank.creditCard.schedular;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,6 +24,11 @@ import com.bank.creditCard.repositories.CustomerDetailsRepository;
 import com.bank.creditCard.repositories.TransactionRepository;
 import com.bank.creditCard.utilities.Constants;
 
+/**
+ * 
+ * This a Scheduler service and schedulars starting point
+ *
+ */
 @Component
 public class SchedularService {
  @Autowired
@@ -42,6 +46,10 @@ public class SchedularService {
  @Autowired
  RewardPointsSchedularService rewardPointsSchedularService;
  private static Logger logger = LoggerFactory.getLogger(SchedularService.class);
+ /**
+  * This method will invoke every 10 minutes to process the Customer requests in
+  * approve status
+  */
  @Scheduled(cron = "${schedular.cron.expression.tenMinutes}")
  public void doTask() {
   logger.info("GenerateCreditCardsSchedularService - started");
@@ -68,6 +76,12 @@ public class SchedularService {
   logger.info("GenerateCreditCardsSchedularService - ended");
  }
 
+ /**
+  * This method will process all Customer requests to generate new Credit Cards
+  * @param cardRequestDetailsList List for Credit Card request details
+  * @param customerDetailsList    List of Customer details
+  * @param creditCardNamesList    List of available credit card in system
+  */
  private void generateCreditCardsAndMapToUser(
    List<CardRequestDetails> cardRequestDetailsList,
    List<CustomerDetails> customerDetailsList,
@@ -87,6 +101,10 @@ public class SchedularService {
 
  }
 
+ /**
+  * This method will invoke every 10 mins to process RewardPoints calculation
+  * task for multiple transactions
+  */
  @Scheduled(cron = "${schedular.cron.expression.tenMinutes}")
  public void rewardPointsSchedularTask() {
   logger.info("rewardPointsSchedularTask - started");
@@ -128,11 +146,18 @@ public class SchedularService {
      logger.error("RewardPointPorcess failed: {}",
        userCardDetails.getUserCardId(), e);
     }
+
    }
+
   }
+
   logger.info("rewardPointsSchedularTask - ended");
  }
 
+ /**
+  * This method will invoke every 10 minutes to process the requests in reject
+  * status and delete CustomerDetails from DB
+  */
  @Scheduled(cron = "${schedular.cron.expression.tenMinutes}")
  public void deleteUserSchedularTask() {
   logger.info("deleteUserSchedularTask - started");
@@ -153,6 +178,7 @@ public class SchedularService {
      .collect(Collectors.toList());
    customerDetailsRepository.deleteAll(customerToDelete);
   }
+
   logger.info("deleteUserSchedularTask - ended");
  }
 }

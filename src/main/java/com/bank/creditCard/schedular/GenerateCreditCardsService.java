@@ -5,15 +5,11 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +25,12 @@ import com.bank.creditCard.repositories.CustomerDetailsRepository;
 import com.bank.creditCard.utilities.Constants;
 import com.bank.creditCard.utilities.Utility;
 
+/**
+ * 
+ * This is a service class used to generate new Credit Cards based on Customer
+ * Request details
+ *
+ */
 @Component
 public class GenerateCreditCardsService {
  @Autowired
@@ -41,6 +43,15 @@ public class GenerateCreditCardsService {
  CreditCardDetailsRepository creditCardDetailsRepository;
  private static Logger logger = LoggerFactory
    .getLogger(GenerateCreditCardsService.class);
+ /**
+  * This method will generate and save a new credit card on Customer
+  * @param customerDetailsList List of Customer details to filter the Actual
+  *                            Customer
+  * @param creditCardNamesList List of {@link CreditCardName} to get a
+  *                            {@link CreditCardName} details
+  * @param requestDetails      Customer request details
+  * @throws DataNotFound When required data not found
+  */
  @Async("asyncExecutor")
  @Transactional
  public void generateAndSaveCreditCard(
@@ -67,6 +78,13 @@ public class GenerateCreditCardsService {
     customerDetails.getUserId());
  }
 
+ /**
+  * This method will generate an {@link CreditCardDetails} entity based on
+  * {@link CreditCardName} and {@link CustomerDetails}
+  * @param creditCardName  {@link CreditCardName} customer requested
+  * @param customerDetails {@link CustomerDetails} who requested
+  * @return New {@link CreditCardDetails} entity
+  */
  private CreditCardDetails generatedCreditCardDetails(
    CreditCardName creditCardName, CustomerDetails customerDetails) {
   CreditCardDetails creditCardDetails = new CreditCardDetails();
@@ -91,6 +109,10 @@ public class GenerateCreditCardsService {
   return creditCardDetails;
  }
 
+ /**
+  * This method will generate a new credit card number
+  * @return A unique 16 digit credit card number
+  */
  private Long generatedCreditCardNumber() {
   String creditCardNumberStr = Utility.randomSixteenDigitNumber();
   Long creditCardNumber = Long.valueOf(creditCardNumberStr);
@@ -104,6 +126,11 @@ public class GenerateCreditCardsService {
   return creditCardNumber;
  }
 
+ /**
+  * This method to get List of customer details based on userIds
+  * @param customerUserIds Set of userIds to find {@link CustomerDetails}
+  * @return List for available {@link CustomerDetails}
+  */
  public List<CustomerDetails> getCustomerDetails(Set<Long> customerUserIds) {
   return customerDetailsRepository
     .findCustomerDetailsByUserIds(customerUserIds);
