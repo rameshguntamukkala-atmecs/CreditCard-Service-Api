@@ -20,7 +20,7 @@ public class MessageConstants {
 	public static final String USER_DETAILS_UPDATE_SUCCESS = "User details are updated successfully";
 	
 	public static final String INVALID_CREDIT_CARD_DETAILS = "Credit card details are invalid";
-	public static final String INSUFFICIENT_BALANCE = "Transaction decliend due to insufficient balance";
+	public static final String INSUFFICIENT_BALANCE = "Transaction declined due to insufficient balance";
 	public static final String TRANSACTION_COMPLETED = "Transaction is successfully completed";
 	
 

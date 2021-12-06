@@ -1,5 +1,12 @@
 package com.bank.creditCard.resources;
 
+import com.bank.creditCard.utilities.MessageConstants;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +33,7 @@ import com.bank.creditCard.services.CreditCardUserService;
  * 4. View a credit cards details for a Customer <br>
  *
  */
+@Tag(name = "User Resource", description = "APIs which are used to view/update Customer details and view Credit Card Details")
 @RestController
 @RequestMapping(path = "/user")
 public class CreditCardUserResoruce {
@@ -37,9 +45,14 @@ public class CreditCardUserResoruce {
   * @return {@link CustomerDetails} is binded in {@link ResponseEntity}
   * @throws DataNotFound When Customer is not found for userId
   */
+ @Operation(summary = "This method is used to get the Customer details")
+ @ApiResponses(value = {
+         @ApiResponse(responseCode = "302 Found", description = MessageConstants.DATA_FOUND),
+         @ApiResponse(responseCode = "404 Not Found", description = MessageConstants.DATA_NOT_FOUND)})
  @GetMapping("/details/{userId}")
  public ResponseEntity<ServiceResponse> getUserDetails(
-   @PathVariable Long userId) throws DataNotFound {
+         @Parameter(description = "userId of a Customer", required = true, example = "10")
+         @PathVariable Long userId) throws DataNotFound {
   return service.getUserDetails(userId);
  }
 
@@ -53,9 +66,18 @@ public class CreditCardUserResoruce {
   * @throws InvalidRequestException When Primary data like FirstName, LastName,
   *                                 PAN Number are updated.
   */
+ @Operation(summary = "This method is used to update Customer details")
+ @ApiResponses(value = {
+         @ApiResponse(responseCode = "201 Created", description = MessageConstants.USER_DETAILS_UPDATE_SUCCESS),
+         @ApiResponse(responseCode = "400 Bad Request", description = "Primary user details cannot be updated"),
+         @ApiResponse(responseCode = "404 Not Found", description = MessageConstants.DATA_NOT_FOUND)})
  @PutMapping("/update/details/{userId}")
  public ResponseEntity<ServiceResponse> updateUserDetails(
-   @PathVariable Long userId, @RequestBody CustomerDetails customerDetails)
+         @Parameter(description = "userId of a Customer", required = true)
+         @PathVariable Long userId,
+         @Parameter(description = "Updated Customer details", required = true,
+                 schema = @Schema(implementation = CustomerDetails.class))
+         @RequestBody CustomerDetails customerDetails)
    throws DataNotFound, InvalidRequestException {
   return service.validateAndUpdateUserDetails(userId, customerDetails);
  }
@@ -66,9 +88,13 @@ public class CreditCardUserResoruce {
   * @return List of {@link CreditCardDetails} are binded to
   *         {@link ResponseEntity}
   */
+ @Operation(summary = "This method is used to get all Credit Cards for a Customer")
+ @ApiResponses(value = {
+         @ApiResponse(responseCode = "200 OK")})
  @GetMapping("/cards/{userId}")
  public ResponseEntity<ServiceResponse> getCardsAvailableForUser(
-   @PathVariable Long userId) {
+         @Parameter(description = "userId of a Customer", required = true)
+         @PathVariable Long userId) {
   return service.getCardsAvailableForUser(userId);
  }
 
@@ -77,9 +103,14 @@ public class CreditCardUserResoruce {
   * @param cardId cardId of a {@link CreditCardDetails}
   * @return {@link CreditCardDetails} is binded to a {@link ResponseEntity}
   */
+ @Operation(summary = "This method is used to get a Credit Card details")
+ @ApiResponses(value = {
+         @ApiResponse(responseCode = "302 Found", description = MessageConstants.DATA_FOUND),
+         @ApiResponse(responseCode = "404 Not Found", description = MessageConstants.DATA_NOT_FOUND)})
  @GetMapping("/card/details/{cardId}")
  public ResponseEntity<ServiceResponse> getCreditCardDetails(
-   @PathVariable Long cardId) {
+    @Parameter(description = "CardId of a user Credit Card", required = true, example = "10")
+         @PathVariable Long cardId) {
   return service.getCreditCardDetails(cardId);
  }
 }

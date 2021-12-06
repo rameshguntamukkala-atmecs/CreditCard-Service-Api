@@ -46,3 +46,7 @@ rewards:
           travel: 5.0
           shopping: 2.7
           other: 0.3
+
+springdoc:
+    swagger-ui:
+          path: "/swagger-ui.html"
