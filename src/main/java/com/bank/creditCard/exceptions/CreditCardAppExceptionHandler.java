@@ -19,7 +19,7 @@ public class CreditCardAppExceptionHandler {
  /**
   * This method will catch the custom exception serialize the exception to
   * {@link ServiceExceptionResponse}
-  * @param The custom exception raised in functionality
+  * @param e The custom exception raised in functionality
   * @return Returns a {@link ServiceExceptionResponse} binded in
   *         {@link ResponseEntity}
   */
