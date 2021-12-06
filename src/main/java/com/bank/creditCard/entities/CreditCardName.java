@@ -1,8 +1,5 @@
 package com.bank.creditCard.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,7 +11,10 @@ import com.bank.creditCard.offers.CreditCardOffers;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
+/**
+ * This is an entity class for table CREDIT_CARD_NAMES
+ *
+ */
 @ToString
 @Getter
 @Setter

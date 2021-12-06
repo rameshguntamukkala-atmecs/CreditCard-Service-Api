@@ -14,30 +14,27 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * This is an entity class for table REWARD_POINTS_DETAILS
+ *
+ */
 @Getter
 @Setter
 @ToString
 @Entity
-@Table (name = "REWARD_POINTS_DETAILS")
+@Table(name = "REWARD_POINTS_DETAILS")
 public class CardRewardPoints {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@Column (name = "CARD_ID")
-	private Long cardId;
-	
-	@Column (name = "REWARD_POINTS")
-	private BigInteger rewardPoints;
-	
-	@Column (name = "CLAIM_STATUS")
-	private Short claimStatus;
-	
-	@Column (name = "CREATED_TIME")
-	private Timestamp createdTime;
-	
-	@Column (name = "MODIFIED_TIME")
-	private Timestamp modifiedTime;
-	
+ @Id
+ @GeneratedValue(strategy = GenerationType.IDENTITY)
+ private Long id;
+ @Column(name = "CARD_ID")
+ private Long cardId;
+ @Column(name = "REWARD_POINTS")
+ private BigInteger rewardPoints;
+ @Column(name = "CLAIM_STATUS")
+ private Short claimStatus;
+ @Column(name = "CREATED_TIME")
+ private Timestamp createdTime;
+ @Column(name = "MODIFIED_TIME")
+ private Timestamp modifiedTime;
 }

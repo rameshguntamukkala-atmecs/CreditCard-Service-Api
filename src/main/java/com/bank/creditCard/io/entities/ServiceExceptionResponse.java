@@ -8,11 +8,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ServiceExceptionResponse {
-
-	private String responseMessage;
-	private int responseCode;
-	private String responseName;
-	private ZonedDateTime responseTimstamp;
-	
-	
+ private String responseMessage;
+ private int responseCode;
+ private String responseName;
+ private ZonedDateTime responseTimstamp;
 }

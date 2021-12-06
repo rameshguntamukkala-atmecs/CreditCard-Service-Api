@@ -8,12 +8,10 @@ import lombok.Data;
 
 @Data
 public class TransactionSearchQuery {
-
-	@NotNull
-	private Long cardNumber;
-	private Short transactionType;
-	private Date transactionDate;
-	private Date fromDate;
-	private Date toDate;
-	
+ @NotNull
+ private Long cardNumber;
+ private Short transactionType;
+ private Date transactionDate;
+ private Date fromDate;
+ private Date toDate;
 }

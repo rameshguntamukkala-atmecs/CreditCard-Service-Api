@@ -11,24 +11,33 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import com.bank.creditCard.Exceptions.AsyncExceptionHandler;
 
+/**
+ * This is a configuration class for Async service
+ *
+ */
 @Configuration
 @EnableAsync
-public class ServiceAsyncConfig implements AsyncConfigurer{
+public class ServiceAsyncConfig implements AsyncConfigurer {
+ /**
+  * This method will generate a {@link ThreadPoolTaskExecutor} bean
+  * @return {@link Executor} with ThreadPool configuration
+  */
+ @Bean(name = "asyncExecutor")
+ public Executor asyncExecutor() {
+  ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+  executor.setCorePoolSize(3);
+  executor.setMaxPoolSize(3);
+  executor.setQueueCapacity(100);
+  executor.setThreadNamePrefix("Pool-");
+  executor.initialize();
+  return executor;
+ }
 
-	 	@Bean(name = "asyncExecutor")
-	    public Executor asyncExecutor() 
-	    {
-	        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-	        executor.setCorePoolSize(3);
-	        executor.setMaxPoolSize(3);
-	        executor.setQueueCapacity(100);
-	        executor.setThreadNamePrefix("Pool-");
-	        executor.initialize();
-	        return executor;
-	    }
-	
-	 	@Override
-	 	public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-	 		return new AsyncExceptionHandler();
-	 	}
+ /**
+  * This is a configuration method for Async exception handler
+  */
+ @Override
+ public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+  return new AsyncExceptionHandler();
+ }
 }

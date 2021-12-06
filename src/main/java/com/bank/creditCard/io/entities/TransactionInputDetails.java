@@ -18,37 +18,26 @@ import lombok.ToString;
 @Setter
 @ToString
 public class TransactionInputDetails {
-
-	@NotBlank
-	private Long cardNumber;
-	
-	@NotBlank
-	private Date cardValidTo;
-	
-	private String cardCvv;
-	private String cardPin;
-
-	@NotBlank
-	private String nameOnCard;
-	
-	@NotBlank
-	private BigDecimal amount;
-	private String marchantName;
-	
-	@NotBlank
-	private Short transactionType;
-	
-	private Short transactionCategory;
-	private String transactionMsg;
-	private String transactionPlace;
-	private Short transactionStatus;
-	
-	private Timestamp transactionTime;
-	
-	@JsonIgnore
-	private CreditCardDetails creditCardDetails;
-	
-	@JsonIgnore
-	private CreditCardName creditCardName;
-	
+ @NotBlank
+ private Long cardNumber;
+ @NotBlank
+ private Date cardValidTo;
+ private String cardCvv;
+ private String cardPin;
+ @NotBlank
+ private String nameOnCard;
+ @NotBlank
+ private BigDecimal amount;
+ private String marchantName;
+ @NotBlank
+ private Short transactionType;
+ private Short transactionCategory;
+ private String transactionMsg;
+ private String transactionPlace;
+ private Short transactionStatus;
+ private Timestamp transactionTime;
+ @JsonIgnore
+ private CreditCardDetails creditCardDetails;
+ @JsonIgnore
+ private CreditCardName creditCardName;
 }

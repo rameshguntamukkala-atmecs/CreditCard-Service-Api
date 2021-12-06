@@ -12,13 +12,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TransactionSearchResponse {
-
-	private Long cardNo;
-	private Date validFrom;
-	private Date validTo;
-	private String nameOnCard;
-	private BigDecimal outstandingAmount;
-	private BigDecimal totalAmount; 
-	
-	List<TransactionDetails> transactionDetails;
+ private Long cardNo;
+ private Date validFrom;
+ private Date validTo;
+ private String nameOnCard;
+ private BigDecimal outstandingAmount;
+ private BigDecimal totalAmount;
+ List<TransactionDetails> transactionDetails;
 }

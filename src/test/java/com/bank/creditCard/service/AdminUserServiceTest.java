@@ -18,10 +18,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import com.bank.creditCard.Exceptions.DataNotFound;
+import com.bank.creditCard.Exceptions.InvalidRequestException;
 import com.bank.creditCard.entities.CardRequestDetails;
 import com.bank.creditCard.entities.CustomerDetails;
+import com.bank.creditCard.io.entities.ServiceResponse;
 import com.bank.creditCard.repositories.CustomerDetailsRepository;
 import com.bank.creditCard.services.AdminUserService;
 import com.bank.creditCard.services.CreditCardRequestService;
@@ -134,8 +138,67 @@ public class AdminUserServiceTest {
 
 		assertThrows(DataNotFound.class, () -> {service.getRequestDetails(requestId);} );
 		
-		
 	}
 	
+	@Test
+	public void test_approveOrRejectRequest_approveRequest_postiveCase() throws DataNotFound, InvalidRequestException {
+	 
+	 Optional<CardRequestDetails> mockResultRequest =  Optional.of(getMockCustomerRequestDetails(1l)) ;
+	 String requestId = mockResultRequest.get().getRequestId(), message = "Approve Request";
+	 Short status = Short.valueOf("1");
+	 Mockito.doReturn(mockResultRequest).when(creditCardRequestService).getRequestDetails(requestId);
+	 Mockito.doNothing().when(creditCardRequestService).updateStatusToRequest(status, requestId, message);
+	 
+	 ResponseEntity<ServiceResponse> response = service.approveOrRejectRequest(requestId, status, message);
+	 
+	 assertEquals(HttpStatus.ACCEPTED.value(), response.getBody().getResponseCode());
+	 assertEquals(status, ((CardRequestDetails)response.getBody().getResponseObject()).getStatus());
+	}
+	
+	@Test
+  public void test_approveOrRejectRequest_rejectedRequest_postiveCase() throws DataNotFound, InvalidRequestException {
+   
+   Optional<CardRequestDetails> mockResultRequest =  Optional.of(getMockCustomerRequestDetails(2l)) ;
+   String requestId = mockResultRequest.get().getRequestId(), message = "Reject Request";
+   Short status = Short.valueOf("-1");
+   Mockito.doReturn(mockResultRequest).when(creditCardRequestService).getRequestDetails(requestId);
+   Mockito.doNothing().when(creditCardRequestService).updateStatusToRequest(status, requestId, message);
+   
+   ResponseEntity<ServiceResponse> response = service.approveOrRejectRequest(requestId, status, message);
+   
+   assertEquals(HttpStatus.ACCEPTED.value(), response.getBody().getResponseCode());
+   assertEquals(status, ((CardRequestDetails)response.getBody().getResponseObject()).getStatus());
+  }
+	
+	@Test
+	public void test_approveOrRejectRequest_requestDetailsNotAvaiable_negativeCase() {
+	 
+	 Optional<CardRequestDetails> mockResultRequest =  Optional.empty();
+	 String requestId = Utility.getUUID(); 
+   Mockito.doReturn(mockResultRequest).when(creditCardRequestService).getRequestDetails(requestId);
+   assertThrows(DataNotFound.class, () -> {service.approveOrRejectRequest(requestId, Short.valueOf("1"), "Approve Request");});
+	 
+	}
+	
+	@Test
+  public void test_approveOrRejectRequest_requestDetailsInvalidStatus_negativeCase() {
+   
+	 CardRequestDetails requestDetails = getMockCustomerRequestDetails(1l);
+	 requestDetails.setStatus(Short.valueOf("2"));
+	 Short status = Short.valueOf("-1"); 
+	 String requestId = requestDetails.getRequestId(), message = "Approve Request";
+	 Optional<CardRequestDetails> mockResultRequest =  Optional.of(requestDetails);
+
+	 Mockito.doReturn(mockResultRequest).when(creditCardRequestService).getRequestDetails(requestId);
+   assertThrows(InvalidRequestException.class, () -> {service.approveOrRejectRequest(requestId, status, message);});
+   
+  }
+	
+	@Test
+  public void test_approveOrRejectRequest_invalidInputStatus_negativeCase() {
+	 String requestId = Utility.getUUID();
+	 assertThrows(InvalidRequestException.class, () -> {service.approveOrRejectRequest(requestId, Short.valueOf("2"), "Approve Request");});
+   
+  }
 	
 }

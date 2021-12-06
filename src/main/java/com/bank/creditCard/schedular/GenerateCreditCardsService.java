@@ -31,94 +31,81 @@ import com.bank.creditCard.utilities.Utility;
 
 @Component
 public class GenerateCreditCardsService {
+ @Autowired
+ CreditCardRequestRepository cardRequestRepository;
+ @Autowired
+ CustomerDetailsRepository customerDetailsRepository;
+ @Autowired
+ CreditCardNamesRepository creditCardNamesRepository;
+ @Autowired
+ CreditCardDetailsRepository creditCardDetailsRepository;
+ private static Logger logger = LoggerFactory
+   .getLogger(GenerateCreditCardsService.class);
+ @Async("asyncExecutor")
+ @Transactional
+ public void generateAndSaveCreditCard(
+   List<CustomerDetails> customerDetailsList,
+   List<CreditCardName> creditCardNamesList, CardRequestDetails requestDetails)
+   throws DataNotFound {
+  logger.info("Credit Card request: {}", requestDetails.getRequestId());
+  CreditCardName creditCardName = creditCardNamesList.stream()
+    .filter(
+      card -> card.getCreditCardId().equals(requestDetails.getCreditCardId()))
+    .findAny().orElseThrow(() -> new DataNotFound(
+      "CreditCardName data is not found: " + requestDetails.getCreditCardId()));
+  CustomerDetails customerDetails = customerDetailsList.stream()
+    .filter(user -> user.getUserId().equals(requestDetails.getUserId()))
+    .findAny().orElseThrow(() -> new DataNotFound(
+      "Customer Data is not found: " + requestDetails.getUserId()));
+  CreditCardDetails creditCardDetails = generatedCreditCardDetails(
+    creditCardName, customerDetails);
+  creditCardDetailsRepository.save(creditCardDetails);
+  cardRequestRepository.updateUserCardIdAndStatusToTheRequest(
+    creditCardDetails.getUserCardId(), Constants.REQUEST_STATUS_CARD_GENERATED,
+    requestDetails.getRequestId());
+  logger.info("Credit Card is generated for the user: {}",
+    customerDetails.getUserId());
+ }
 
-	@Autowired
-	CreditCardRequestRepository cardRequestRepository;
-	
-	@Autowired
-	CustomerDetailsRepository customerDetailsRepository;
-	
-	@Autowired
-	CreditCardNamesRepository creditCardNamesRepository;
-	
-	@Autowired
-	CreditCardDetailsRepository creditCardDetailsRepository;
-	
-	private static Logger logger = LoggerFactory.getLogger(GenerateCreditCardsService.class);
-	
+ private CreditCardDetails generatedCreditCardDetails(
+   CreditCardName creditCardName, CustomerDetails customerDetails) {
+  CreditCardDetails creditCardDetails = new CreditCardDetails();
+  Long creditCardNumber = generatedCreditCardNumber();
+  String cardPin = Utility.randomFourDigitNumber();
+  String cvv = Utility.randomThreeDigitNumber();
+  creditCardDetails.setCardName(creditCardName.getCardName());
+  creditCardDetails.setCardType(creditCardName.getCreditCardType());
+  creditCardDetails.setCardNumber(creditCardNumber);
+  creditCardDetails.setCardVerificatonValue(cvv);
+  creditCardDetails.setCardPin(cardPin);
+  creditCardDetails.setValidFrom(new Date(System.currentTimeMillis()));
+  creditCardDetails.setValidTo(Utility.getNewCardValidToDate(
+    Optional.ofNullable(creditCardName.getCreditCardValidityInMonths())));
+  creditCardDetails.setCardStatus(Constants.CREDIT_CARD_STATUS_ACTIVE);
+  creditCardDetails.setNameOnCard(customerDetails.getFirstName());
+  creditCardDetails.setCardLimit(
+    Utility.calculateCardLimitBy(customerDetails.getSalaryPerYear()));
+  creditCardDetails.setCreatedTime(new Timestamp(System.currentTimeMillis()));
+  creditCardDetails.setModifiedTime(new Timestamp(System.currentTimeMillis()));
+  creditCardDetails.setUserId(customerDetails.getUserId());
+  return creditCardDetails;
+ }
 
-	@Async("asyncExecutor")
-	@Transactional
-	public void generateAndSaveCreditCard(List<CustomerDetails> customerDetailsList,
-			List<CreditCardName> creditCardNamesList, CardRequestDetails requestDetails) throws DataNotFound {
-		
-		logger.info("Credit Card request: {}", requestDetails.getRequestId());
-		
-		CreditCardName creditCardName = creditCardNamesList.stream()
-				.filter(card -> card.getCreditCardId().equals(requestDetails.getCreditCardId()))
-				.findAny()
-				.orElseThrow(()-> new DataNotFound("CreditCardName data is not found: "+ requestDetails.getCreditCardId())); 
-		
-		CustomerDetails customerDetails = customerDetailsList.stream()
-				.filter(user -> user.getUserId().equals(requestDetails.getUserId()))
-				.findAny()
-				.orElseThrow(() -> new DataNotFound("Customer Data is not found: "+ requestDetails.getUserId()));
-		
- 
-		  CreditCardDetails creditCardDetails = generatedCreditCardDetails(creditCardName, customerDetails);
-  
-		  creditCardDetailsRepository.save(creditCardDetails);
-		  cardRequestRepository.updateUserCardIdAndStatusToTheRequest(creditCardDetails.getUserCardId(), Constants.REQUEST_STATUS_CARD_GENERATED, requestDetails.getRequestId());
-		  
-		  logger.info("Credit Card is generated for the user: {}", customerDetails.getUserId());
-	}
-	
-	private CreditCardDetails generatedCreditCardDetails(CreditCardName creditCardName, CustomerDetails customerDetails) {
-		
-		CreditCardDetails creditCardDetails = new CreditCardDetails();
-		
-		Long creditCardNumber = generatedCreditCardNumber();
-		String cardPin = Utility.randomFourDigitNumber();
-		String cvv = Utility.randomThreeDigitNumber();
-		
-		creditCardDetails.setCardName(creditCardName.getCardName());
-		creditCardDetails.setCardType(creditCardName.getCreditCardType());
-		
-		creditCardDetails.setCardNumber(creditCardNumber);
-		creditCardDetails.setCardVerificatonValue(cvv);
-		creditCardDetails.setCardPin(cardPin);
-		
-		creditCardDetails.setValidFrom(new Date(System.currentTimeMillis()));
-		creditCardDetails.setValidTo(Utility.getNewCardValidToDate(Optional.ofNullable(creditCardName.getCreditCardValidityInMonths())));
-		creditCardDetails.setCardStatus(Constants.CREDIT_CARD_STATUS_ACTIVE);
-		
-		creditCardDetails.setNameOnCard(customerDetails.getFirstName());
-		creditCardDetails.setCardLimit(Utility.calculateCardLimitBy(customerDetails.getSalaryPerYear()));
-		
-		creditCardDetails.setCreatedTime(new Timestamp(System.currentTimeMillis()));
-		creditCardDetails.setModifiedTime(new Timestamp(System.currentTimeMillis()));
-		
-		creditCardDetails.setUserId(customerDetails.getUserId());
-		
-		return creditCardDetails;
-	}
+ private Long generatedCreditCardNumber() {
+  String creditCardNumberStr = Utility.randomSixteenDigitNumber();
+  Long creditCardNumber = Long.valueOf(creditCardNumberStr);
+  CreditCardDetails creditCardDetails = creditCardDetailsRepository
+    .findCardDetailsByCardNumber(creditCardNumber);
 
-	private Long generatedCreditCardNumber() {
-		
-		String creditCardNumberStr = Utility.randomSixteenDigitNumber();
-		Long creditCardNumber = Long.valueOf(creditCardNumberStr);
-		
-		CreditCardDetails creditCardDetails = creditCardDetailsRepository.findCardDetailsByCardNumber(creditCardNumber);
-		
-		if (creditCardDetails != null) {
-			generatedCreditCardNumber();
-		}
-		
-		return creditCardNumber;
-	}
+  if (creditCardDetails != null) {
+   generatedCreditCardNumber();
+  }
 
-	public List<CustomerDetails> getCustomerDetails(Set<Long> customerUserIds) {
-		 return customerDetailsRepository.findCustomerDetailsByUserIds(customerUserIds);
-	}
+  return creditCardNumber;
+ }
 
+ public List<CustomerDetails> getCustomerDetails(Set<Long> customerUserIds) {
+  return customerDetailsRepository
+    .findCustomerDetailsByUserIds(customerUserIds);
+ }
 }

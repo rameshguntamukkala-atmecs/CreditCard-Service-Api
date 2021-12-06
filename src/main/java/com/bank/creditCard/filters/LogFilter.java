@@ -13,26 +13,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+/**
+ * 
+ * This a filter will logs the request details before and after invoking a
+ * resource method
+ *
+ */
 @Component
-public class LogFilter implements Filter{
-
-	private static Logger logger = LoggerFactory.getLogger(LogFilter.class);
-	
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
-		
-		long systemTime = System.currentTimeMillis();
-		HttpServletRequest servletRequest = (HttpServletRequest) request;
-		
-		logger.info("RequestURI - {}", servletRequest.getRequestURI());
-		logger.info("MethodType - {}", servletRequest.getMethod());
-		
-		chain.doFilter(request, response);
-
-		logger.info("Total Time: {} milliseconds", (System.currentTimeMillis() - systemTime));
-		
-		
-	}
-
+public class LogFilter implements Filter {
+ private static Logger logger = LoggerFactory.getLogger(LogFilter.class);
+ @Override
+ public void doFilter(ServletRequest request, ServletResponse response,
+   FilterChain chain) throws IOException, ServletException {
+  long systemTime = System.currentTimeMillis();
+  HttpServletRequest servletRequest = (HttpServletRequest) request;
+  logger.info("RequestURI - {}", servletRequest.getRequestURI());
+  logger.info("MethodType - {}", servletRequest.getMethod());
+  chain.doFilter(request, response);
+  logger.info("Total Time: {} milliseconds",
+    (System.currentTimeMillis() - systemTime));
+ }
 }
