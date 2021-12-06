@@ -1,4 +1,4 @@
-package com.bank.creditCard.Exceptions;
+package com.bank.creditCard.exceptions;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

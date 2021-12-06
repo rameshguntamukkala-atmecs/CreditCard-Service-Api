@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bank.creditCard.Exceptions.DataNotFound;
-import com.bank.creditCard.Exceptions.DeficientException;
-import com.bank.creditCard.Exceptions.DuplicateUserException;
 import com.bank.creditCard.entities.CardRequestDetails;
+import com.bank.creditCard.exceptions.DataNotFound;
+import com.bank.creditCard.exceptions.DeficientException;
+import com.bank.creditCard.exceptions.DuplicateUserException;
 import com.bank.creditCard.io.entities.CreditCardRequestDetails;
 import com.bank.creditCard.io.entities.ServiceResponse;
 import com.bank.creditCard.services.CreditCardRequestService;

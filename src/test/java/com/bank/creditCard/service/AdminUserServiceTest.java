@@ -21,10 +21,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.bank.creditCard.Exceptions.DataNotFound;
-import com.bank.creditCard.Exceptions.InvalidRequestException;
 import com.bank.creditCard.entities.CardRequestDetails;
 import com.bank.creditCard.entities.CustomerDetails;
+import com.bank.creditCard.exceptions.DataNotFound;
+import com.bank.creditCard.exceptions.InvalidRequestException;
 import com.bank.creditCard.io.entities.ServiceResponse;
 import com.bank.creditCard.repositories.CustomerDetailsRepository;
 import com.bank.creditCard.services.AdminUserService;

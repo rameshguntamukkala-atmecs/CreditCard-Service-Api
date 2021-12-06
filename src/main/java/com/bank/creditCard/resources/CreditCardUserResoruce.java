@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bank.creditCard.Exceptions.DataNotFound;
-import com.bank.creditCard.Exceptions.InvalidRequestException;
 import com.bank.creditCard.entities.CreditCardDetails;
 import com.bank.creditCard.entities.CustomerDetails;
+import com.bank.creditCard.exceptions.DataNotFound;
+import com.bank.creditCard.exceptions.InvalidRequestException;
 import com.bank.creditCard.io.entities.ServiceResponse;
 import com.bank.creditCard.services.CreditCardUserService;
 

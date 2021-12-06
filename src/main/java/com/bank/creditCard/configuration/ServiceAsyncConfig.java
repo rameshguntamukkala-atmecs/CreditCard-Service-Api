@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import com.bank.creditCard.Exceptions.AsyncExceptionHandler;
+import com.bank.creditCard.exceptions.AsyncExceptionHandler;
 
 /**
  * This is a configuration class for Async service
