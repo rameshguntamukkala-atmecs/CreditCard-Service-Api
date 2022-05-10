@@ -105,4 +105,9 @@ public class CreditCardUserService {
   return Utility.getResponseEntity(creditCardDetails.get(), HttpStatus.FOUND,
     MessageConstants.DATA_FOUND);
  }
+
+	public void myPrint() {
+		System.out.println("Error Message");
+	}
+
 }
