@@ -2,6 +2,7 @@ package com.bank.creditCard.entities;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,41 +16,40 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 
  * This is an entity class for table CUSTOMER_DETAILS
- *
  */
 @Getter
 @Setter
 @ToString
 @Entity
-@Table(name = "CUSTOMER_DETAILS")
+@Table(name = "user_details")
 public class CustomerDetails {
- @Id
- @GeneratedValue(strategy = GenerationType.IDENTITY)
- private Long userId;
- @Column(name = "FIRST_NAME")
- private String firstName;
- @Column(name = "LAST_NAME")
- private String lastName;
- @Column(name = "AGE")
- private Short age;
- @Column(name = "PHONE_NUMBER")
- private Long phoneNumber;
- @Column(name = "OCCUPATION_TYPE")
- private String occupationType;
- @Column(name = "DESIGNATION")
- private String designation;
- @Column(name = "SALARY_PER_YEAR")
- private BigDecimal salaryPerYear;
- @Column(name = "PAN_CARD_NUMBER")
- private String panCardNumber;
- @Column(name = "CREATED_TIME")
- private Timestamp createdTime;
- @Column(name = "USERNAME")
- private String username;
- @Column(name = "ADDRESS")
- private String address;
- @Column(name = "EMAIL_ID")
- private String emailId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userId;
+    private String firstName;
+    private String lastName;
+    private Short age;
+    private Long phoneNumber;
+    private String occupationType;
+    private String designation;
+    private BigDecimal salaryPerYear;
+    private String panCardNumber;
+    private String username;
+    private String address;
+    private String emailId;
+
+    @Column(
+            insertable = false,
+            updatable = false,
+            columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"
+    )
+    private Instant createTs;
+
+    @Column(
+            insertable = false,
+            updatable = false,
+            columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
+    )
+    private Instant updateTs;
 }

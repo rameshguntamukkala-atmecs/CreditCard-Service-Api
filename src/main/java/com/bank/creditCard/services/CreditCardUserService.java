@@ -83,7 +83,7 @@ public class CreditCardUserService {
   */
  public ResponseEntity<ServiceResponse> getCardsAvailableForUser(Long userId) {
   List<CreditCardDetails> userCreditCardsList = creditCardDetailsRepository
-    .findCardsByUserId(userId);
+    .findByUserId(userId);
   return Utility.getResponseEntity(userCreditCardsList, HttpStatus.OK, null);
  }
 

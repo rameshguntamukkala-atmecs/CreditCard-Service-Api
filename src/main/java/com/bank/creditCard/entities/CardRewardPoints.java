@@ -2,6 +2,7 @@ package com.bank.creditCard.entities;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,25 +17,31 @@ import lombok.ToString;
 
 /**
  * This is an entity class for table REWARD_POINTS_DETAILS
- *
  */
 @Getter
 @Setter
 @ToString
 @Entity
-@Table(name = "REWARD_POINTS_DETAILS")
+@Table(name = "reward_points_details")
 public class CardRewardPoints {
- @Id
- @GeneratedValue(strategy = GenerationType.IDENTITY)
- private Long id;
- @Column(name = "CARD_ID")
- private Long cardId;
- @Column(name = "REWARD_POINTS")
- private BigInteger rewardPoints;
- @Column(name = "CLAIM_STATUS")
- private Short claimStatus;
- @Column(name = "CREATED_TIME")
- private Timestamp createdTime;
- @Column(name = "MODIFIED_TIME")
- private Timestamp modifiedTime;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private Long cardId;
+    private BigInteger rewardPoints;
+    private Short claimStatus;
+
+    @Column(
+            insertable = false,
+            updatable = false,
+            columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"
+    )
+    private Instant createTs;
+
+    @Column(
+            insertable = false,
+            updatable = false,
+            columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
+    )
+    private Instant updateTs;
 }

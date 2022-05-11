@@ -5,9 +5,9 @@ server:
 
 spring:
     datasource:
-        url: jdbc:sqlserver://localhost;databaseName=BankCreditCard 
-        username: sa
-        password: makeitso
+        url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/credit_card_system
+        username: root
+        password: Atmecs@123
     jpa:
         show-sql: true
         properties:
@@ -15,7 +15,7 @@ spring:
                  dialect: org.hibernate.dialect.SQLServer2012Dialect
                  format_sql: true
 
-schedular:
+scheduler:
     cron:
         expression:
              tenMinutes: 40 * * * * ?

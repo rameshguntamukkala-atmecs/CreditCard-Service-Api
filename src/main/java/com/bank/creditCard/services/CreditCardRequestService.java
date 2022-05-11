@@ -103,7 +103,7 @@ public class CreditCardRequestService {
 	 * @return List of {@link CardRequestDetails} which are matched with status
 	 */
 	public List<CardRequestDetails> getRequestDetailsByStatus(Short status) {
-		return creditCardRequestRepository.findAllByStatus(status);
+		return creditCardRequestRepository.findByStatus(status);
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class CreditCardRequestService {
 	 */
 	@Transactional
 	public void updateStatusToRequest(Short status, String requestId, String message) {
-		creditCardRequestRepository.updateStatusToTheRequest(status, requestId, message);
+		creditCardRequestRepository.updateStatusAndMessageByRequestId(status, requestId, message);
 	}
 
 	/**

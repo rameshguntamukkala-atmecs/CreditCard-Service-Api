@@ -1,6 +1,5 @@
 package com.bank.creditCard.entities;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -19,24 +18,15 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@Table(name = "CREDIT_CARD_NAMES")
+@Table(name = "credit_card_names")
 public class CreditCardName {
 
 	@Id
-	@Column(name = "CREDIT_CARD_ID")
 	private String creditCardId;
-	
-	@Column(name = "CREDIT_CARD_NAME")
-	private String cardName;
-	
-	@Column(name = "CREDIT_CARD_TYPE")
+	private String creditCardName;
 	private String creditCardType;
-
-	@Column(name = "CREDIT_CARD_VALIDITY_IN_MONTHS")
-	private Short creditCardValidityInMonths;
-	
-	@Column(name = "CREDIT_CARD_DESCRIPTION")
-	private String creditCardDescription;
+	private Short validityInMonths;
+	private String cardDescription;
 	
 	@Transient
 	CreditCardOffers cardOffers;

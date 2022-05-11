@@ -87,10 +87,10 @@ public class CreditCardRequestServiceTest {
 		
 		CreditCardName card = new CreditCardName();
 		
-		card.setCardName(cardName);
-		card.setCreditCardDescription("Card Mock Description");
+		card.setCreditCardName(cardName);
+		card.setCardDescription("Card Mock Description");
 		card.setCreditCardId(cardName);
-		card.setCreditCardValidityInMonths(Short.valueOf("24"));
+		card.setValidityInMonths(Short.valueOf("24"));
 		card.setCreditCardType(cardType);
 		
 		return card;
@@ -202,7 +202,7 @@ public class CreditCardRequestServiceTest {
 		
 		CardRequestDetails requestDetails = getMockCustomerRequestDetails();
 		
-		Mockito.doReturn(customerDetails).when(customerDetailsRepository).findCustomerDetailsByPanCardNumber(anyString());
+		Mockito.doReturn(customerDetails).when(customerDetailsRepository).findByPanCardNumberLike(anyString());
 		Mockito.doReturn(creditCardName).when(creditCardNamesRepository).findById(creditCardRequestDetails.getRequestedCardName());
 		Mockito.doReturn(customerDetailsNew).when(entityHelper).generatedCustomerDetails(creditCardRequestDetails);
 		Mockito.doReturn(customerDetailsNew).when(customerDetailsRepository).save(any(CustomerDetails.class));
@@ -225,7 +225,7 @@ public class CreditCardRequestServiceTest {
 		
 		Optional<CustomerDetails> customerDetails = Optional.of(new CustomerDetails());
 		
-		Mockito.doReturn(customerDetails).when(customerDetailsRepository).findCustomerDetailsByPanCardNumber(creditCardRequestDetails.getCustomerPanCardNumber());
+		Mockito.doReturn(customerDetails).when(customerDetailsRepository).findByPanCardNumberLike(creditCardRequestDetails.getCustomerPanCardNumber());
 		
 		assertThrows(CreditCardAppException.class, () -> {
 			service.saveCreditCardRequestDetails(creditCardRequestDetails);
@@ -240,7 +240,7 @@ public class CreditCardRequestServiceTest {
 		creditCardRequestDetails.setCustomerAnnualSalary(BigDecimal.valueOf(2000.00));
 		Optional<CustomerDetails> customerDetails = Optional.empty();
 		
-		Mockito.doReturn(customerDetails).when(customerDetailsRepository).findCustomerDetailsByPanCardNumber(creditCardRequestDetails.getCustomerPanCardNumber());
+		Mockito.doReturn(customerDetails).when(customerDetailsRepository).findByPanCardNumberLike(creditCardRequestDetails.getCustomerPanCardNumber());
 		
 		assertThrows(CreditCardAppException.class, () -> {
 			service.saveCreditCardRequestDetails(creditCardRequestDetails);
@@ -256,7 +256,7 @@ public class CreditCardRequestServiceTest {
 		Optional<CustomerDetails> customerDetails = Optional.empty();
 		Optional<CreditCardName> creditCardName = Optional.empty();
 		
-		Mockito.doReturn(customerDetails).when(customerDetailsRepository).findCustomerDetailsByPanCardNumber(creditCardRequestDetails.getCustomerPanCardNumber());
+		Mockito.doReturn(customerDetails).when(customerDetailsRepository).findByPanCardNumberLike(creditCardRequestDetails.getCustomerPanCardNumber());
 		Mockito.doReturn(creditCardName).when(creditCardNamesRepository).findById(creditCardRequestDetails.getRequestedCardName());
 		
 		assertThrows(CreditCardAppException.class, () -> {
@@ -270,7 +270,7 @@ public class CreditCardRequestServiceTest {
 	public void testFor_getRequestDetailsByStatus_positiveCase() {
 		
 		List<CardRequestDetails> cardRequestDetails = getMockCardRequestDetailsList();
-		Mockito.doReturn(cardRequestDetails).when(creditCardRequestRepository).findAllByStatus(anyShort());
+		Mockito.doReturn(cardRequestDetails).when(creditCardRequestRepository).findByStatus(anyShort());
 		
 		List<CardRequestDetails> expectedRequestDetails = service.getRequestDetailsByStatus(Short.valueOf("0"));
 		assertEquals(cardRequestDetails.size(), expectedRequestDetails.size());
@@ -281,7 +281,7 @@ public class CreditCardRequestServiceTest {
 	@Test
 	public void testFor_getRequestDetailsByStatus_negativeCase() {
 		
-		Mockito.doThrow(QueryTimeoutException.class).when(creditCardRequestRepository).findAllByStatus(anyShort());
+		Mockito.doThrow(QueryTimeoutException.class).when(creditCardRequestRepository).findByStatus(anyShort());
 		assertThrows(Exception.class, () -> {service.getRequestDetailsByStatus(Short.valueOf("0"));});
 		
 	}
@@ -314,11 +314,11 @@ public class CreditCardRequestServiceTest {
 	public void testFor_updateStatusToRequest_positiveCase() {
 		String requestId = Utility.getUUID();
 		String message = "Request Approved";
-		Mockito.doNothing().when(creditCardRequestRepository).updateStatusToTheRequest(Constants.REQUEST_STATUS_APPROVED, requestId, message);
+		Mockito.doNothing().when(creditCardRequestRepository).updateStatusAndMessageByRequestId(Constants.REQUEST_STATUS_APPROVED, requestId, message);
 		
 		service.updateStatusToRequest(Constants.REQUEST_STATUS_APPROVED, requestId, message);
 		
-		Mockito.verify(creditCardRequestRepository, times(1)).updateStatusToTheRequest(Constants.REQUEST_STATUS_APPROVED, requestId, message);
+		Mockito.verify(creditCardRequestRepository, times(1)).updateStatusAndMessageByRequestId(Constants.REQUEST_STATUS_APPROVED, requestId, message);
 		
 	}
 	
@@ -334,7 +334,7 @@ public class CreditCardRequestServiceTest {
 		
 		ResponseEntity<ServiceResponse> response = service.getCardDetailsByLocation(cardId, "Hyderabad");
 		
-		assertEquals(creditCardName.get().getCardName(), ((CreditCardName) response.getBody().getResponseObject()).getCardName());
+		assertEquals(creditCardName.get().getCreditCardName(), ((CreditCardName) response.getBody().getResponseObject()).getCreditCardName());
 		
 		
 	}
@@ -351,7 +351,7 @@ public class CreditCardRequestServiceTest {
 		
 		ResponseEntity<ServiceResponse> response = service.getCardDetailsByLocation(cardId, "Bangalore");
 		
-		assertEquals(creditCardName.get().getCardName(), ((CreditCardName) response.getBody().getResponseObject()).getCardName());
+		assertEquals(creditCardName.get().getCreditCardName(), ((CreditCardName) response.getBody().getResponseObject()).getCreditCardName());
 		assertNotNull(((CreditCardName) response.getBody().getResponseObject()).getCardOffers());
 	}
 	
@@ -367,7 +367,7 @@ public class CreditCardRequestServiceTest {
 		
 		ResponseEntity<ServiceResponse> response = service.getCardDetailsByLocation(cardId, "Delhi");
 		
-		assertEquals(creditCardName.get().getCardName(), ((CreditCardName) response.getBody().getResponseObject()).getCardName());
+		assertEquals(creditCardName.get().getCreditCardName(), ((CreditCardName) response.getBody().getResponseObject()).getCreditCardName());
 		assertNotNull(((CreditCardName) response.getBody().getResponseObject()).getCardOffers());
 	}
 	
@@ -383,7 +383,7 @@ public class CreditCardRequestServiceTest {
 		
 		ResponseEntity<ServiceResponse> response = service.getCardDetailsByLocation(cardId, "Mumbai");
 		
-		assertEquals(creditCardName.get().getCardName(), ((CreditCardName) response.getBody().getResponseObject()).getCardName());
+		assertEquals(creditCardName.get().getCreditCardName(), ((CreditCardName) response.getBody().getResponseObject()).getCreditCardName());
 		assertNotNull(((CreditCardName) response.getBody().getResponseObject()).getCardOffers());
 	}
 	

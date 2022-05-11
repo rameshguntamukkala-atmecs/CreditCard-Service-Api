@@ -102,7 +102,7 @@ public class AdminUserServiceTest {
 		List<CustomerDetails> customerList = getCustomersList();
 		
 		Mockito.doReturn(requestList).when(creditCardRequestService).getRequestDetailsByStatus(Constants.REQUEST_STATUS_PROGRESS);
-		Mockito.doReturn(customerList).when(customerDetailsRepository).findCustomerDetailsByUserIds(customerUserIds);
+		Mockito.doReturn(customerList).when(customerDetailsRepository).findByUserIdIn(customerUserIds);
 		
 		CompletableFuture<Object> actualResponse = service.getRequestsPendingForApproval();
 		

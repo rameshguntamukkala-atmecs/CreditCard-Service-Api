@@ -10,15 +10,10 @@ import org.springframework.stereotype.Repository;
 import com.bank.creditCard.entities.CreditCardDetails;
 
 @Repository
-public interface CreditCardDetailsRepository
-  extends
-   JpaRepository<CreditCardDetails, Long> {
- @Query(value = "SELECT * FROM USER_CREDIT_CARD_DETAILS U WHERE U.CARD_NUMBER= :cardNumber", nativeQuery = true)
- public CreditCardDetails findCardDetailsByCardNumber(
-   @Param("cardNumber") Long cardNumber);
- @Query(value = "SELECT * FROM USER_CREDIT_CARD_DETAILS WHERE USER_ID = :userId ", nativeQuery = true)
- public List<CreditCardDetails> findCardsByUserId(@Param("userId") Long userId);
- @Query(value = "SELECT * FROM USER_CREDIT_CARD_DETAILS WHERE USER_ID IN (:userIds) ", nativeQuery = true)
- public List<CreditCardDetails> findCardsByUserIds(
-   @Param("userIds") List<Long> userIds);
+public interface CreditCardDetailsRepository extends JpaRepository<CreditCardDetails, Long> {
+
+    public CreditCardDetails findByCardNumber(Long cardNumber);
+    List<CreditCardDetails> findByUserId(Long userId);
+    List<CreditCardDetails> findByUserIdIn(List<Long> userIds);
+
 }

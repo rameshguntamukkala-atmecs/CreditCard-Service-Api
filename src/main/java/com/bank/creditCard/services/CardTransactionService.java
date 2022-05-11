@@ -87,7 +87,7 @@ public class CardTransactionService {
    inputTransactionDetails.getCreditCardDetails()
      .setOutStandingAmount(outStandingAmount);
    inputTransactionDetails.getCreditCardDetails()
-     .setOutStandingAmountModifiedTime(
+     .setOutStandingAmountUpdateTs(
        new Timestamp(System.currentTimeMillis()));
    creditCardDetailsRepository
      .save(inputTransactionDetails.getCreditCardDetails());
@@ -129,7 +129,7 @@ public class CardTransactionService {
   List<TransactionDetails> transactionDetails = transactionSearchRepository
     .getTransactionDetails(searchQuery);
   CreditCardDetails cardDetails = creditCardDetailsRepository
-    .findCardDetailsByCardNumber(searchQuery.getCardNumber());
+    .findByCardNumber(searchQuery.getCardNumber());
   TransactionSearchResponse resultObject = helper
     .generateTransactionSearchResponse(transactionDetails, cardDetails);
   return resultObject;

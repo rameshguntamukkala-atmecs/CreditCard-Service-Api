@@ -18,55 +18,56 @@ import com.bank.creditCard.repositories.TransactionSearchRepository;
 
 @Repository
 public class TransactionSearchRepositoryImpl
-  implements
-   TransactionSearchRepository {
- @Autowired
- NamedParameterJdbcTemplate template;
- private static final Logger logger = LoggerFactory
-   .getLogger(TransactionSearchRepositoryImpl.class);
- private String SELECT_TRANSACTIONS = "SELECT * FROM CREDIT_CARD_TRANSACTION_DETAILS T WHERE T.CARD_NUMBER = :cardNo :WHERE";
- @Override
- public List<TransactionDetails> getTransactionDetails(
-   TransactionSearchQuery searchQuery) {
-  Map<String, String> params = new HashMap<>();
-  params.put("cardNo", searchQuery.getCardNumber().toString());
-  String whereClause = constractWhereClause(searchQuery, params);
-  String sql = SELECT_TRANSACTIONS.replace(":WHERE", whereClause);
-  logger.info("Transaction Search Query: {}", sql);
-  List<TransactionDetails> transactionList = null;
+        implements
+        TransactionSearchRepository {
+    @Autowired
+    NamedParameterJdbcTemplate template;
+    private static final Logger logger = LoggerFactory
+            .getLogger(TransactionSearchRepositoryImpl.class);
+    private String SELECT_TRANSACTIONS = "SELECT * FROM CREDIT_CARD_TRANSACTION_DETAILS T WHERE T.CARD_NUMBER = :cardNo :WHERE";
 
-  try {
-   transactionList = template.query(sql, params,
-     BeanPropertyRowMapper.newInstance(TransactionDetails.class));
-  } catch (DataAccessException e) {
-   logger.info("Query failed", e);
-  }
+    @Override
+    public List<TransactionDetails> getTransactionDetails(
+            TransactionSearchQuery searchQuery) {
+        Map<String, String> params = new HashMap<>();
+        params.put("cardNo", searchQuery.getCardNumber().toString());
+        String whereClause = constractWhereClause(searchQuery, params);
+        String sql = SELECT_TRANSACTIONS.replace(":WHERE", whereClause);
+        logger.info("Transaction Search Query: {}", sql);
+        List<TransactionDetails> transactionList = null;
 
-  return transactionList;
- }
+        try {
+            transactionList = template.query(sql, params,
+                    BeanPropertyRowMapper.newInstance(TransactionDetails.class));
+        } catch (DataAccessException e) {
+            logger.info("Query failed", e);
+        }
 
- private String constractWhereClause(TransactionSearchQuery searchQuery,
-   Map<String, String> params) {
-  StringBuilder whereClause = new StringBuilder();
+        return transactionList;
+    }
 
-  if (searchQuery.getTransactionType() != null) {
-   whereClause.append("AND T.TRANSACTION_TYPE = :transactionType ");
-   params.put("transactionType", searchQuery.getTransactionType().toString());
-  }
+    private String constractWhereClause(TransactionSearchQuery searchQuery,
+                                        Map<String, String> params) {
+        StringBuilder whereClause = new StringBuilder();
 
-  if (searchQuery.getTransactionDate() != null) {
-   whereClause
-     .append("AND CONVERT(DATE, T.TRANSACTION_TIME) = :transactionDate ");
-   params.put("transactionDate", searchQuery.getTransactionDate().toString());
-  } else if (searchQuery.getFromDate() != null
-    && searchQuery.getToDate() != null) {
-   whereClause.append(
-     "AND CONVERT(DATE, T.TRANSACTION_TIME) BETWEEN :fromDate AND :toDate ");
-   params.put("fromDate", searchQuery.getFromDate().toString());
-   params.put("toDate", searchQuery.getToDate().toString());
-  }
+        if (searchQuery.getTransactionType() != null) {
+            whereClause.append("AND T.TRANSACTION_TYPE = :transactionType ");
+            params.put("transactionType", searchQuery.getTransactionType().toString());
+        }
 
-  whereClause.append(" ORDER BY T.TRANSACTION_TIME ASC ");
-  return whereClause.toString();
- }
+        if (searchQuery.getTransactionDate() != null) {
+            whereClause
+                    .append("AND CONVERT(DATE, T.TRANSACTION_TIME) = :transactionDate ");
+            params.put("transactionDate", searchQuery.getTransactionDate().toString());
+        } else if (searchQuery.getFromDate() != null
+                && searchQuery.getToDate() != null) {
+            whereClause.append(
+                    "AND CONVERT(DATE, T.TRANSACTION_TIME) BETWEEN :fromDate AND :toDate ");
+            params.put("fromDate", searchQuery.getFromDate().toString());
+            params.put("toDate", searchQuery.getToDate().toString());
+        }
+
+        whereClause.append(" ORDER BY T.TRANSACTION_TIME ASC ");
+        return whereClause.toString();
+    }
 }

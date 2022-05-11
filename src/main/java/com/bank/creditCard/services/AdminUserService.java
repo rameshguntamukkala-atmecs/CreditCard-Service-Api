@@ -62,7 +62,7 @@ public class AdminUserService {
   Set<Long> customerUserIds = requestDetailsList.stream()
     .map(CardRequestDetails::getUserId).collect(Collectors.toSet());
   Map<Long, CustomerDetails> customerDetailsMap = customerDetailsRepository
-    .findCustomerDetailsByUserIds(customerUserIds).stream()
+    .findByUserIdIn(customerUserIds).stream()
     .collect(Collectors.toMap(CustomerDetails::getUserId, user -> user));
   requestDetailsList.forEach(request -> request
     .setCustomerDetails(customerDetailsMap.get(request.getUserId())));

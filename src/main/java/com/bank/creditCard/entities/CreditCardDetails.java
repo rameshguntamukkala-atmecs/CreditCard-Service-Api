@@ -1,9 +1,9 @@
 package com.bank.creditCard.entities;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,46 +18,41 @@ import lombok.ToString;
 
 /**
  * This is an entity class for table USER_CREDIT_CARD_DETAILS
- *
  */
 @Getter
 @Setter
 @ToString
 @Entity
-@Table(name = "USER_CREDIT_CARD_DETAILS")
+@Table(name = "user_credit_card_details")
 public class CreditCardDetails {
- @Id
- @GeneratedValue(strategy = GenerationType.IDENTITY)
- @Column(name = "USER_CARD_ID")
- private Long userCardId;
- @Column(name = "USER_ID")
- private Long userId;
- @Column(name = "CARD_NAME")
- private String cardName;
- @Column(name = "CARD_TYPE")
- private String cardType;
- @Column(name = "CARD_NUMBER")
- private Long cardNumber;
- @Column(name = "VALID_FROM")
- private Date validFrom;
- @Column(name = "VALID_TO")
- private Date validTo;
- @Column(name = "CARD_VERIFICATION_VALUE")
- private String cardVerificatonValue;
- @Column(name = "CARD_PIN")
- private String cardPin;
- @Column(name = "NAME_ON_CARD")
- private String nameOnCard;
- @Column(name = "CARD_LIMIT")
- private BigDecimal cardLimit;
- @Column(name = "CARD_STATUS")
- private Short cardStatus;
- @Column(name = "CREATED_TIME")
- private Timestamp createdTime;
- @Column(name = "MODIFIED_TIME")
- private Timestamp modifiedTime;
- @Column(name = "OUT_STANDING_AMOUNT")
- private BigDecimal outStandingAmount;
- @Column(name = "OUT_STANDING_AMOUNT_MODIFIED_TIME")
- private Timestamp outStandingAmountModifiedTime;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userCardId;
+    private Long userId;
+    private String cardName;
+    private String cardType;
+    private Long cardNumber;
+    private Date validFrom;
+    private Date validTo;
+    private String cardVerificationValue;
+    private String cardPin;
+    private String nameOnCard;
+    private BigDecimal cardLimit;
+    private Short cardStatus;
+    private BigDecimal outStandingAmount;
+    private Timestamp outStandingAmountUpdateTs;
+
+    @Column(
+            insertable = false,
+            updatable = false,
+            columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"
+    )
+    private Instant createTs;
+
+    @Column(
+            insertable = false,
+            updatable = false,
+            columnDefinition = "TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
+    )
+    private Instant updateTs;
 }

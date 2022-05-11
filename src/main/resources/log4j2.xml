@@ -5,7 +5,7 @@
 			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %c - %msg %n" />
  		</Console>
  		
- 		<File name="File" filename="/log/creditCardApp.log">
+ 		<File name="File" filename="/Users/ramesh.guntamukkala/Documents/PersonalProjects/logs/creditCardApp.log">
  			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %c - %msg %n" />	
  		</File>
  		

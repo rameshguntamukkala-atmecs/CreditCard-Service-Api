@@ -57,7 +57,7 @@ public class CreditCardUserServiceTest {
   cardDetails.setUserCardId(1l);
   cardDetails.setCardNumber(cardNumber);
   cardDetails.setCardPin(pin);
-  cardDetails.setCardVerificatonValue(cvv);
+  cardDetails.setCardVerificationValue(cvv);
   cardDetails.setCardName("MASTER CARD");
   cardDetails.setUserId(userId);
   return cardDetails;
@@ -139,7 +139,7 @@ public class CreditCardUserServiceTest {
  @Test
  public void test_getCardsAvailableForUser_postiveCase() {
   List<CreditCardDetails> cards = getCreditCarDetailsList();
-  Mockito.doReturn(cards).when(creditCardDetailsRepository).findCardsByUserId(1l);
+  Mockito.doReturn(cards).when(creditCardDetailsRepository).findByUserId(1l);
   ResponseEntity<ServiceResponse> response = service.getCardsAvailableForUser(1l);
   assertEquals(cards.size(), ((List)response.getBody().getResponseObject()).size());
  }
