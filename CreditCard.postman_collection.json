@@ -1,0 +1,359 @@
+{
+	"info": {
+		"_postman_id": "1c93dea5-7663-4c18-b56f-933f53f98abe",
+		"name": "CreditCard",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ERequestResource",
+			"item": [
+				{
+					"name": "GetAvailableCards",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/{{server-context-path}}/eRequest/available/cards",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"{{server-context-path}}",
+								"eRequest",
+								"available",
+								"cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCardDetails",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/{{server-context-path}}/eRequest/available/cards",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"{{server-context-path}}",
+								"eRequest",
+								"available",
+								"cards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostCreditCardRequestForNewCustomer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"customerFirstName\": \"Reventh\",\r\n    \"customerLastName\": \"Kumar\",\r\n    \"customerAge\": 35,\r\n    \"customerPhoneNumber\": 7788799776,\r\n    \"customerEmailId\": \"ravanth@gmail.com\",\r\n    \"customerAddress\": \"Hyderabad\",\r\n    \"customerOccupation\": \"Software Engineer\",\r\n    \"customerDesignation\": \"QA Engineer\",\r\n    \"customerAnnualSalary\": 50000.00,\r\n\t\"customerPanCardNumber\": \"EA32DE22S1\",\r\n    \"requestedCardName\" : \"PLATINUM_TIMES\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/{{server-context-path}}/eRequest/apply/card",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"{{server-context-path}}",
+								"eRequest",
+								"apply",
+								"card"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetRequestDetails",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/{{server-context-path}}/eRequest/id/2db43adc-a019-459a-aa9f-3136adc98544",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"{{server-context-path}}",
+								"eRequest",
+								"id",
+								"2db43adc-a019-459a-aa9f-3136adc98544"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "AdminUserResource",
+			"item": [
+				{
+					"name": "GetRequestsPendingForApproval",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/{{server-context-path}}/admin/all/requests",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"{{server-context-path}}",
+								"admin",
+								"all",
+								"requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetRequestDetails",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "ApproveOrRejectRequest",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/{{server-context-path}}/admin/approve/480302b5-43ce-4510-b87b-f444d81a1452",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"{{server-context-path}}",
+								"admin",
+								"approve",
+								"480302b5-43ce-4510-b87b-f444d81a1452"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CreditCardUserResource",
+			"item": [
+				{
+					"name": "GetUserDetails",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/{{server-context-path}}/user/details/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"{{server-context-path}}",
+								"user",
+								"details",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateUserDetails",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"userId\": 6,\r\n        \"firstName\": \"Harika\",\r\n        \"lastName\": \"Kanuru\",\r\n        \"age\": 29,\r\n        \"phoneNumber\": 7993967777,\r\n        \"occupationType\": \"Software Engineer\",\r\n        \"designation\": \"QA Engineer\",\r\n        \"salaryPerYear\": 250000.0000,\r\n        \"panCardNumber\": \"H3K43H52HG\",\r\n        \"createdTime\": \"2021-11-27T15:34:00.000+00:00\",\r\n        \"username\": null,\r\n        \"address\": \"KPHB Phase-2, Hyderabad\",\r\n        \"emailId\": \"harika30@gmail.com\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/{{server-context-path}}/user/update/details/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"{{server-context-path}}",
+								"user",
+								"update",
+								"details",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUserCreditCards",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/{{server-context-path}}/user/cards/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"{{server-context-path}}",
+								"user",
+								"cards",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCreditCardDetails",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TransactionResource",
+			"item": [
+				{
+					"name": "SubmitTransaction",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cardNumber\":\"5553085780943406\",\r\n    \"cardValidTo\" : \"2023-11-27\",\r\n    \"cardPin\" : \"3314\",\r\n    \"nameOnCard\": \"Ramesh Kumar\",\r\n    \"amount\" : 200.00,\r\n    \"marchantName\" : \"ABC Marchants\",\r\n    \"transactionType\" : 1,\r\n    \"transactionCategory\" : 1,\r\n    \"transactionPlace\" : \"Kphb Colony, Hyderabad\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/{{server-context-path}}/transaction/submit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"{{server-context-path}}",
+								"transaction",
+								"submit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SearchStatementDetails",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"cardNumber\":\"5553085780943406\",\r\n    \"cardValidTo\" : \"2023-11-27\",\r\n    \"cardPin\" : \"3314\",\r\n    \"nameOnCard\": \"Ramesh Kumar\",\r\n    \"amount\" : 200.00,\r\n    \"marchantName\" : \"ABC Marchants\",\r\n    \"transactionType\" : 1,\r\n    \"transactionCategory\" : 1,\r\n    \"transactionPlace\" : \"Kphb Colony, Hyderabad\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/{{server-context-path}}/transaction/submit",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"{{server-context-path}}",
+								"transaction",
+								"submit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetRewardPoints",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "server-context-path",
+			"value": "creditcard/api"
+		}
+	]
+}
